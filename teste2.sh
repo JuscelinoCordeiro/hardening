@@ -5,5 +5,5 @@ sleep 1
 echo "Preparação para o hardening do servidor"
 sleep 1
 echo "Executando atualização do sistema"
-sudo apt-get update
+
 
