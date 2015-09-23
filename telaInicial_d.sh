@@ -3,6 +3,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/j
 
 dialog\
 	--title 'Hardening'\
-	--msgbox 'Iniciando processo de hardenização do servidor'\
+	--infobox '\nIniciando processo de hardenização do servidor'\
 	5 60
-		
+	
+sleep 3
