@@ -3,6 +3,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/j
 
 dialog --stdout\
  --title 'Ativação de Serviços' \
+ --separate-output \
  --checklist 'Quais serviços deseja ativar?' \
 0 40 0 \
 1 'Servidor de DHCP' off \

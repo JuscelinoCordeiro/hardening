@@ -1,10 +1,22 @@
 #!/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
 
-proxima='telaInicial'
+proxima='preparacao'
 
 while : ; do
 	case "$proxima" in
+		preparacao)
+		
+		$PWD/instalaPacotesIniciais.sh
+
+		if [ $? -eq 0 ]
+			then
+				proxima='telaInicial'
+			else
+				proxima='*'
+		fi
+		;;
+		
 		telaInicial)
 			proxima='testaConexao'
 			$PWD/telaInicial_d.sh
@@ -63,7 +75,52 @@ while : ; do
 			proxima='*'
 			#anterior='telaInicial'
 			servicos=$($PWD/selecaoDeServicos_d.sh)
-			echo "Voce escolheu $servicos"
+			
+			echo "$servicos" | while read OPCAO
+			do
+			 	case $OPCAO in
+			 		1)
+			 			#dhcp
+						echo "dhcp" >> testeLog.log
+					;;
+			 		
+			 		2)
+			 			#dns
+						echo "dns" >> testeLog.log
+			 		;;
+			 		
+			 		3)
+			 			#ssh
+						#echo "ssh" >> testeLog.log
+						$PWD/ssh.sh
+						if [ $? -eq 0 ]
+							then
+								dialog\
+									--title 'SSH'\
+									--infobox '\nServico configurado com sucesso'\
+									5 60
+			
+								else
+									dialog\
+									--title 'SSH'\
+									--infobox '\nOcorreu um erro na configuração do servico.'\
+									5 60
+						fi
+								
+						sleep 4
+																	
+			 		;;
+			 		
+			 		4)
+			 			#web
+						echo "web" >> testeLog.log
+					;;
+				esac
+				
+			 	#echo "$OPCAO" >> testeLog.log
+			done
+			#echo "Voce escolheu $servicos"
+			#sleep 4
 			;;		
 			
 		*)
