@@ -1,27 +1,9 @@
 #!/bin/sh
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
-
-proxima='preparacao'
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+proxima='testaConexao'
 
 while : ; do
 	case "$proxima" in
-		preparacao)
-		
-		$PWD/instalaPacotesIniciais.sh
-
-		if [ $? -eq 0 ]
-			then
-				proxima='telaInicial'
-			else
-				proxima='*'
-		fi
-		;;
-		
-		telaInicial)
-			proxima='testaConexao'
-			$PWD/telaInicial_d.sh
-			;;
-			
 		testaConexao)
 			proxima='atualizarSourcesList'
 			#conexao = sh $PWD/testaConexao.sh
@@ -54,26 +36,39 @@ while : ; do
 					
 				sleep 3
 			fi
-			;;
+		;;
 				
-		atualizarSourcesList)
-		proxima='selServicos'
-		#anterior='telaInicial'
+		preparacao)
+			$PWD/instalaPacotesIniciais.sh
+	
+			if [ $? -eq 0 ]
+				then
+					proxima='telaInicial'
+				else
+					proxima='*'
+			fi
+		;;
 		
-		dialog\
-			--title 'Hardening'\
-			--infobox '\nConfigurando o arquivo sources.list'\
-			5 60
+		telaInicial)
+			proxima='atualizarSourcesList'
+			$PWD/telaInicial_d.sh
+		;;
 			
-		sleep 4	
-		#sh $PWD/atualizarSourcesList.sh 		
-		#sh $PWD/testeEcho.sh 
-						
+		
+		atualizarSourcesList)
+			proxima='selServicos'
+			
+			dialog\
+				--title 'Hardening'\
+				--infobox '\nConfigurando o arquivo sources.list'\
+				5 60
+
+			sh $PWD/atualizarSourcesList.sh
+			sleep 4	
 		;;
 			
 		selServicos)
 			proxima='*'
-			#anterior='telaInicial'
 			servicos=$($PWD/selecaoDeServicos_d.sh)
 			
 			echo "$servicos" | while read OPCAO
@@ -91,7 +86,6 @@ while : ; do
 			 		
 			 		3)
 			 			#ssh
-						#echo "ssh" >> testeLog.log
 						$PWD/ssh.sh
 						if [ $? -eq 0 ]
 							then
