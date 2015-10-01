@@ -10,18 +10,10 @@
 AtualizarSourceslist (){
 #TODO função para rescrever o sources.list
 
+#cria uma cópia do arquivo original
 cp /etc/apt/sources.list /etc/apt/sources.list.old
 
-echo '
-#==========================================================
-# arquivo souces.list editato por hardenizacao em 03/09/2015
-# autor: 2sgt juscelino
-# data de criacao: 03/09/2015
-# data de modificacao: 03/09/2015
-#==========================================================
-' > "/etc/apt/sources.list"
-#' > "/home/thoth/workspace/hardening/testeLog.log"
-
+#cria um novo arquivo sources.list
 echo '
 deb http://ftp.br.debian.org/debian/ jessie main contrib non-free
 deb-src http://ftp.br.debian.org/debian/ jessie main contrib non-free
@@ -32,5 +24,7 @@ deb-src http://security.debian.org/ jessie/updates main contrib non-free
 deb http://ftp.br.debian.org/debian/ jessie-updates main contrib non-free 
 deb-src http://ftp.br.debian.org/debian/ jessie-updates main contrib non-free
 ' > "/etc/apt/sources.list"
-#' > "/home/thoth/workspace/hardening/testeLog.log"
 }
+
+#chamada para a função
+AtualizarSourceslist

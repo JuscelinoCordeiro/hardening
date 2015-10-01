@@ -2,69 +2,37 @@
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 proxima='testaConexao'
 
+clear
+
 while : ; do
 	case "$proxima" in
 		testaConexao)
-			proxima='atualizarSourcesList'
-			#conexao = sh $PWD/testaConexao.sh
-			
+			proxima='telaInicial'
+			clear
+			echo "\nTestando conexão com a internet"
 			ping -c 5 8.8.8.8 > /dev/null
-			
-			(echo 20 ; sleep 1
-			echo 40 ; sleep 1
-			echo 60 ; sleep 1
-			echo 80 ; sleep 1
-			echo 100 ; sleep 1) | dialog\
-									--title 'Teste de conexão'\
-									--gauge '\nTestando a conexão com a internet'\
-										8 40 60
-								
 			if [ $? -eq 0 ]
-				then
-					dialog\
-						--title 'Teste de conexão'\
-						--infobox '\nConexão de rede ok'\
-						5 60
-					
-					sleep 3
+			then
+				clear
+				echo "\nConexão com a internet estabelecida."	
+				sleep 2			
+				clear
+				echo "\nAtualizando arquivo sources.list"
+				echo "Instalando pacotes iniciais."
+				sh $PWD/atualizarSourcesList.sh >> /dev/null
+				sh $PWD/instalaPacotesIniciais.sh >> /dev/null
+				sleep 2
+				clear
 			else
-				proxima=*
-				dialog\
-					--title 'Teste de conexão'\
-					--infobox '\nSem conexão de rede - Abortando.......'\
-					5 60
-					
-				sleep 3
-			fi
+				proxima='*'
+				echo "\nNão foi possível se conectar à internet"
+				echo "Abortando execução do programa"
+			fi			
 		;;
 				
-		preparacao)
-			$PWD/instalaPacotesIniciais.sh
-	
-			if [ $? -eq 0 ]
-				then
-					proxima='telaInicial'
-				else
-					proxima='*'
-			fi
-		;;
-		
 		telaInicial)
-			proxima='atualizarSourcesList'
-			$PWD/telaInicial_d.sh
-		;;
-			
-		
-		atualizarSourcesList)
 			proxima='selServicos'
-			
-			dialog\
-				--title 'Hardening'\
-				--infobox '\nConfigurando o arquivo sources.list'\
-				5 60
-
-			sh $PWD/atualizarSourcesList.sh
-			sleep 4	
+			$PWD/telaInicial_d.sh
 		;;
 			
 		selServicos)
@@ -101,7 +69,7 @@ while : ; do
 									5 60
 						fi
 								
-						sleep 4
+						sleep 3
 																	
 			 		;;
 			 		
@@ -118,21 +86,24 @@ while : ; do
 			;;		
 			
 		*)
-		msg="Janela desconhecida '$proxima'."
-		dialog\
-			--title 'Hardening'\
-			--infobox "\n'$msg'\nAbortando programa..."\
-			5 60
-						
-			sleep 3
-		#echo "janela desconhecida '$proxima'."
-		#echo "abortando programa..."
+		#verifica se o dialog esta instalado antes de exibir a msg de saida
+		menuDialog=$(dpkg --get-selections | grep dialog | awk '{print $1}')
+		if [ -n $menuDialog ]
+		then
+			msg1="Hardenind"
+			msg2="Encerrando programa."
+			sh $PWD/mensagem_d.sh $msg1 $msg2
+		else
+			echo "janela desconhecida '$proxima'."
+			echo "abortando programa..."
+		fi
+		sleep 2
 		clear
 		exit
 	esac
 	
-retorno=$?
-[ $retorno -eq 1 ] && proxima="$anterior" #cancelar
-[ $retorno -eq 255] && break			  #sair
+#retorno=$?
+#[ $retorno -eq 1 ] && proxima="$anterior" #cancelar
+#[ $retorno -eq 255] && break			  #sair
 	
 done #fim do while
