@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ping -c 5 8.8.8.8 > /dev/null
+ping -c 5 8.8.8.8 >> $PWD/hardening.log
 
 #if [ $? -eq 0 ]
 then

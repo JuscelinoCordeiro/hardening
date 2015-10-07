@@ -1,20 +1,20 @@
-#!/bin/bash
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
 #==============================================================================
 # script de instalação e configuracao do ssh
 # autor: st jefferson
 # data de criação: 22/09/2015
 # data de modificação: 23/09/2015
 #==============================================================================
+#!/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
 
 #remove o serviço caso o mesmo ja tenha sido instalado
-apt-get remove --purge openssh-server -y > /dev/null
+apt-get remove --purge openssh-server -y  >> $PWD/hardening.log
 
 #faz a instalação do serviço
-apt-get install openssh-server -y > /dev/null
+apt-get install openssh-server -y  >> $PWD/hardening.log
 
 #para o serviço para que as configurações sejam feitas
-/etc/init.d/ssh stop > /dev/null
+/etc/init.d/ssh stop  >> $PWD/hardening.log
 
 #acessao o diretorio do serviço para fazer as configurações 
 cd /etc/ssh
@@ -51,7 +51,7 @@ mv testessh3 sshd_config
 rm -rf teste*
 
 #inicializa o serviço do SSH
-/etc/init.d/ssh start > /dev/null
+/etc/init.d/ssh start >> $PWD/hardening.log
 
 #limpa a tela
 clear

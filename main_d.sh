@@ -9,18 +9,24 @@ while : ; do
 		testaConexao)
 			proxima='telaInicial'
 			clear
+			echo "\nVerificando condições para execução do programa"
+			sleep 1
+			clear
 			echo "\nTestando conexão com a internet"
-			ping -c 5 8.8.8.8 > /dev/null
+			ping -c 5 8.8.8.8  >> $PWD/hardening.log
 			if [ $? -eq 0 ]
 			then
 				clear
 				echo "\nConexão com a internet estabelecida."	
-				sleep 2			
+				sleep 2	
+				echo "\nIniciando processo de hardenização do servidor."	
+				sleep 2
 				clear
 				echo "\nAtualizando arquivo sources.list"
 				echo "Instalando pacotes iniciais."
-				sh $PWD/atualizarSourcesList.sh >> /dev/null
-				sh $PWD/instalaPacotesIniciais.sh >> /dev/null
+				sh $PWD/atualizarSourcesList.sh  >> $PWD/hardening.log
+				sh $PWD/atualizarSistema.sh >> $PWD/hardening.log
+				sh $PWD/instalaPacotesIniciais.sh  >> $PWD/hardening.log
 				sleep 2
 				clear
 			else
@@ -54,19 +60,20 @@ while : ; do
 			 		
 			 		3)
 			 			#ssh
+						msg1="Hardening"
+						msg2="Instalação do SSH"
+						sh $PWD/mensagem_d.sh "$msg1" "$msg2"
+						
 						$PWD/ssh.sh
 						if [ $? -eq 0 ]
 							then
-								dialog\
-									--title 'SSH'\
-									--infobox '\nServico configurado com sucesso'\
-									5 60
-			
-								else
-									dialog\
-									--title 'SSH'\
-									--infobox '\nOcorreu um erro na configuração do servico.'\
-									5 60
+								msg1="SSH"
+								msg2="Serviço configurado com sucesso"
+								sh $PWD/mensagem_d.sh "$msg1" "$msg2"
+							else
+								msg1="SSH"
+								msg2="Serviço configurado com sucesso"
+								sh $PWD/mensagem_d.sh "$msg1" "$msg2"
 						fi
 								
 						sleep 3
@@ -90,9 +97,9 @@ while : ; do
 		menuDialog=$(dpkg --get-selections | grep dialog | awk '{print $1}')
 		if [ -n $menuDialog ]
 		then
-			msg1="Hardenind"
+			msg1="Hardening"
 			msg2="Encerrando programa."
-			sh $PWD/mensagem_d.sh $msg1 $msg2
+			sh $PWD/mensagem_d.sh "$msg1" "$msg2"
 		else
 			echo "janela desconhecida '$proxima'."
 			echo "abortando programa..."

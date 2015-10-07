@@ -1,4 +1,3 @@
-#!/bin/bash
 #==============================================================================
 # Este script realiza um backup do arquivo de configuracao do arquivo
 # sources.list e reescreve-o adionando os repositórios contrib e non-free
@@ -6,6 +5,10 @@
 # data: 03/09/2015
 # data de modificacao: 03/09/2015
 #==============================================================================
+#!/bin/bash
+
+#declaração da variavel de ambiente
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 AtualizarSourceslist (){
 #TODO função para rescrever o sources.list

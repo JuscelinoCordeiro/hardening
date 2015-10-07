@@ -1,2 +1,2 @@
 #!/bin/bash
-apt-get install dialog
+apt-get install dialog >> $PWD/hardening.log
