@@ -11,5 +11,5 @@
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 apt-get update 2> $PWD/hardening.log
-apt-get upgrade 2> $PWD/hardening.log
-apt-get dist-upgrade 2> $PWD/hardening.log
+#apt-get upgrade 2> $PWD/hardening.log
+#apt-get dist-upgrade 2> $PWD/hardening.log
