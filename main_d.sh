@@ -1,3 +1,10 @@
+#==============================================================================
+# script de principal, tem a função de ser um controlador para
+# chamar outros scripts e receber o retorno dos mesmos
+# autor: 2sgt juscelino
+# data: 03/09/2015
+# data de modificacao: 23/11/2015
+#==============================================================================
 #!/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 proxima='testaConexao'
